@@ -66,6 +66,12 @@ Vector2D.prototype.DivScalar = function( vs ) {
 // - -------------------------------------------------------------------------------------------------------------- - //
 
 // - -------------------------------------------------------------------------------------------------------------- - //
+Vector2D.prototype.Negate = function() {
+	this.x = -this.x;
+	this.y = -this.y;
+	return this;
+}
+// - -------------------------------------------------------------------------------------------------------------- - //
 Vector2D.prototype.Negative = function() {
 	return new Vector2D( -this.x, -this.y );
 }
@@ -97,7 +103,7 @@ Vector2D.prototype.Dot = function( vs ) {
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 Vector2D.prototype.Mix = function( vs, alpha ) {
-	var Copy = new Vector2D( this );
+	var Copy = this.clone();
 	return Copy.MultScalar(1 - alpha).Add( vs.MultScalar(alpha) );
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
@@ -116,15 +122,15 @@ Vector2D.prototype.Manhattan = function() {
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 Vector2D.prototype.MagnitudeSquared = function() {
-	return this.x + this.y;
+	return (this.x * this.x) + (this.y * this.y);
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 Vector2D.prototype.Magnitude = function() {
-	return Math.sqrt( this.x + this.y );
+	return Math.sqrt( (this.x * this.x) + (this.y * this.y) );
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 Vector2D.prototype.Normalize = function() {
-	var Mag = Magnitude();
+	var Mag = this.Magnitude();
 	
 	if ( Mag <= 0 ) {
 		this.x = 0;
@@ -138,7 +144,7 @@ Vector2D.prototype.Normalize = function() {
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 Vector2D.prototype.NormalizeRet = function() {
-	var Mag = Magnitude();
+	var Mag = this.Magnitude();
 	
 	if ( Mag <= 0 ) {
 		this.x = 0;
@@ -152,7 +158,7 @@ Vector2D.prototype.NormalizeRet = function() {
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 Vector2D.prototype.Normal = function() {
-	var Copy = new Vector2D( this );
+	var Copy = this.clone();
 	Copy.Normalize();
 	return Copy;
 }
@@ -169,25 +175,25 @@ Vector2D.prototype.toString = function() {
 // "Operators" - Not actually, but they provide improved syntax by calling builtin functions //
 // - -------------------------------------------------------------------------------------------------------------- - //
 function Add( a, b ) {
-	var Copy = a;
+	var Copy = a.clone();
 	Copy.Add(b);
 	return Copy;
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 function Sub( a, b ) {
-	var Copy = a;
+	var Copy = a.clone();
 	Copy.Sub(b);
 	return Copy;
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 function Mult( a, b ) {
-	var Copy = a;
+	var Copy = a.clone();
 	Copy.Mult(b);
 	return Copy;
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 function Div( a, b ) {
-	var Copy = a;
+	var Copy = a.clone();
 	Copy.Div(b);
 	return Copy;
 }
@@ -195,25 +201,25 @@ function Div( a, b ) {
 
 // - -------------------------------------------------------------------------------------------------------------- - //
 function AddScalar( a, b ) {
-	var Copy = a;
+	var Copy = a.clone();
 	Copy.AddScalar(b);
 	return Copy;
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 function SubScalar( a, b ) {
-	var Copy = a;
+	var Copy = a.clone();
 	Copy.SubScalar(b);
 	return Copy;
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 function MultScalar( a, b ) {
-	var Copy = a;
+	var Copy = a.clone();
 	Copy.MultScalar(b);
 	return Copy;
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 function DivScalar( a, b ) {
-	var Copy = a;
+	var Copy = a.clone();
 	Copy.DivScalar(b);
 	return Copy;
 }

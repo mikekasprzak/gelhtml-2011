@@ -22,7 +22,7 @@ cTileSheet.prototype.Draw = function( cell, _x, _y ) {
 	cell -= cx;
 	cx *= this.CellW;
 	var cy = (cell / this.XCells) * this.CellH;	// Yes, XCells again //
-	ctx.drawImage( this.Data, cx, cy, this.CellW, this.CellH, _x, _y, this.CellW, this.CellH );
+	ctx.drawImage( this.Data, cx, cy, this.CellW, this.CellH, Math.round(_x), Math.round(_y), this.CellW, this.CellH );
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 cTileSheet.prototype.DrawCentered = function( cell, _x, _y ) {
@@ -30,6 +30,6 @@ cTileSheet.prototype.DrawCentered = function( cell, _x, _y ) {
 	cell -= cx;
 	cx *= this.CellW;
 	var cy = (cell / this.XCells) * this.CellH; // Yes, XCells again //
-	ctx.drawImage( this.Data, cx, cy, this.CellW, this.CellH, _x - (this.CellW >> 1), _y - (this.CellH >> 1), this.CellW, this.CellH );
+	ctx.drawImage( this.Data, cx, cy, this.CellW, this.CellH, Math.round(_x - (this.CellW >> 1)), Math.round(_y - (this.CellH >> 1)), this.CellW, this.CellH );
 }
 // - -------------------------------------------------------------------------------------------------------------- - //

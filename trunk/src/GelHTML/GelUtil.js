@@ -1,13 +1,25 @@
 
 // - -------------------------------------------------------------------------------------------------------------- - //
+function isMobileSafari() {
+    return navigator.userAgent.match(/(iPod|iPhone|iPad)/) && navigator.userAgent.match(/AppleWebKit/)
+}
+// - -------------------------------------------------------------------------------------------------------------- - //
+function isMobile() {
+	return 'createTouch' in document;
+}
+// - -------------------------------------------------------------------------------------------------------------- - //
+
+// - -------------------------------------------------------------------------------------------------------------- - //
 function Log( val ) {
-	if ( 'createTouch' in document ) {
-		setTimeout( function() { document.getElementById("HTMLLog").innerHTML += val + "<br />"; }, 50 );
+	if ( isMobile() ) {
+//		setTimeout( function() { document.getElementById("HTMLLog").innerHTML += val + "<br />"; }, 50 );
 	}
 	else {
 		console.log( val );
 	}
 }
+// - -------------------------------------------------------------------------------------------------------------- - //
+
 // - -------------------------------------------------------------------------------------------------------------- - //
 function NextPowerOfTwo( v ) {
 	// http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2 //
@@ -24,17 +36,17 @@ function NextPowerOfTwo( v ) {
 // - -------------------------------------------------------------------------------------------------------------- - //
 
 // - -------------------------------------------------------------------------------------------------------------- - //
-// Utility Functions //
-// - -------------------------------------------------------------------------------------------------------------- - //
-function Util_IndexXY( _x, _y ) {
-	return _x + (_y * this.width);
-}
-// - -------------------------------------------------------------------------------------------------------------- - //
-function Util_GetXY( _x, _y ) {
-	return this.Data[ _x + (_y * this.width) ];
-}
-// - -------------------------------------------------------------------------------------------------------------- - //
-function Util_SetXY( _x, _y, _value ) {
-	this.Data[ _x + (_y * this.width) ] = _value;
-}
+// http://my.opera.com/GreyWyvern/blog/show.dml/1725165 //
+Object.prototype.clone = function() {
+	var newObj = (this instanceof Array) ? [] : {};
+	for (i in this) {
+		if (i == 'clone') continue;
+		if (this[i] && typeof this[i] == "object") {
+			newObj[i] = this[i].clone();
+		} 
+		else 
+			newObj[i] = this[i]
+	} 
+	return newObj;
+};
 // - -------------------------------------------------------------------------------------------------------------- - //

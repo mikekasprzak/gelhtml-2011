@@ -1,65 +1,51 @@
 // - -------------------------------------------------------------------------------------------------------------- - //
-var Art;
-// - -------------------------------------------------------------------------------------------------------------- - //
-var Tick;
-// - -------------------------------------------------------------------------------------------------------------- - //
-var PlayerPos;
+var DebugElement = new cDebugElements;
 // - -------------------------------------------------------------------------------------------------------------- - //
 
 // - -------------------------------------------------------------------------------------------------------------- - //
-function Game_Init() {
+function cGame() {
 	Log( " - ----- Game Initialized ----- -" );
-	
-	Tick = 0;
 
 /*
-	Art = new cTileSheet( "Content/GameArt.png", 8, 8 );
+	this.Art = new cTileSheet( "Content/GameArt.png", 8, 8 );
 */
 	
-	PlayerPos = new Vector2D( 120, 70 );
+	this.PlayerPos = new Vector2D( 120, 70 );
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
-function Game_InitSounds() {
+cGame.prototype.Init = function() {
+	// Code called upon the first run (not construction) //
+}
+// - -------------------------------------------------------------------------------------------------------------- - //
+cGame.prototype.InitSounds = function() {
 	Log("+ Loading Sounds...");
 
 /*	
-	soundManager.createSound({
-		id: 'BGMusic',
-		url: 'Content/Music.mp3',
-		autoLoad: true,
-		autoPlay: true,
-		volume: 50
-	});
-	
-	soundManager.createSound({
-		id:'Hit',
-//		multiShotEvents: true,
-		autoLoad: true,
-		autoPlay: false,
-		url:'Content/Sound/HammerHit.wav',
-		volume: 50
-	});
+	sndLoad( 'Hit', 'HammerHit' );
+	sndLoadAndPlay( 'BGMusic', '../Music' );
 */
 
 	Log("- Done Loading Sounds.", 'info');
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
-function Game_Exit() {
+cGame.prototype.Exit = function() {
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 
 // - -------------------------------------------------------------------------------------------------------------- - //
-function Game_Step() {
-	Tick++;
+cGame.prototype.Step = function() {
+	DebugElement.Step(); // Step at the top of the frame, so to release elements that expire //
+
+	// ***** //
 	
 	var Stick = new Vector2D( Input_Stick.x, Input_Stick.y );
 	
-	PlayerPos = Add(PlayerPos, Stick);
+	this.PlayerPos = Add(this.PlayerPos, Stick);
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 
 // - -------------------------------------------------------------------------------------------------------------- - //
-function Game_Draw() {
+cGame.prototype.Draw = function() {
 	// Clear to background Color //
 //	gelDrawRectClear( 0, 0, Canvas.width, Canvas.height );
 	// Clear to Color //
@@ -74,28 +60,40 @@ function Game_Draw() {
 	
 /*
 	if ( Art.Data.complete ) {
-		Art.DrawCentered( 0, PlayerPos.x, PlayerPos.y );
+		Art.DrawCentered( 0, this.PlayerPos.x, this.PlayerPos.y );
 	}
 */
 
 	// Player (cursor keys) //
 	gelSetColor( 255, 255, 0 );
-	gelDrawDiamond( PlayerPos.x, PlayerPos.y, 6 );
+	gelDrawDiamond( this.PlayerPos.x, this.PlayerPos.y, 6 );
+
+
+	if ( Input_KeyBits & KEY_ACTION ) {
+		gelSetColor( 0, 255, 0 );
+		gelDrawX( this.PlayerPos.x, this.PlayerPos.y, 12 );
+	}
+
+	// Draw Debug Elements //
+	DebugElement.Draw();
 
 	// Mouse Cursor //
-	if ( Input_MouseVisible ) {
-		gelSetColor( 255, 0, 255 );
-		gelDrawCircleFill( Math.floor(Input_Mouse.x / Canvas_Scale), Math.floor(Input_Mouse.y / Canvas_Scale), 4 );
+	if ( Input_Mouse.Visible ) {
+		if ( Input_MouseBits & MOUSE_LMB )
+			gelSetColor( 0, 255, 0 );
+		else
+			gelSetColor( 255, 0, 255 );
+		gelDrawCircleFill( Math.floor(Input_Mouse.x), Math.floor(Input_Mouse.y), 4 );
 	}
 	
 	// ***** //
 	
-	Game_DrawFPS();
+	this.DrawFPS();
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
 
 // - -------------------------------------------------------------------------------------------------------------- - //
-function Game_ShowPaused() {
+cGame.prototype.ShowPaused = function() {
 	ctx.fillStyle = "rgb(255,0,0)";
 	ctx.font = "32pt Arial";
 	ctx.textAlign = "center";
@@ -103,17 +101,14 @@ function Game_ShowPaused() {
 	ctx.fillText( "*PAUSED*", Canvas.width / 2, Canvas.height / 2 );
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
-function Game_DrawFPS() {
-	// Change color if running on a phone or tablet //
-	if ( 'createTouch' in document )
+cGame.prototype.DrawFPS = function() {
+	if ( isMobile() )
 		ctx.fillStyle = "rgb(255,0,255)";
 	else
 		ctx.fillStyle = "rgb(255,255,0)";
-	
 	ctx.font = "12pt Arial";
-	ctx.textAlign = "left";
+	ctx.textAlign = "right";
 	ctx.textBaseline = "top";
-	ctx.fillText( FPSClock, 1, 1 );
+	ctx.fillText( FPSClock, Canvas.width - 1, 1 );
 }
 // - -------------------------------------------------------------------------------------------------------------- - //
-
