@@ -1,0 +1,3 @@
+**GelHTML** is a collection game creation components for Canvas 2D and HTML5 game creation, written in JavaScript. It’s based on **GEL** (Game Engine Library), a similar library used internally by Michael Kasprzak and Sykhronics Entertainment on high end mobile, PC, and console games.
+
+**GelHTML** is primarily a pet project used for prototyping and during game jams (Ludum Dare). It comes with no warranty, no support, and no guarantee of updates. However, its source is freely available under the BSD open source license (i.e. free, but give me a credit).
